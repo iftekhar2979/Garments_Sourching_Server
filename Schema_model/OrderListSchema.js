@@ -4,6 +4,10 @@ const OrderListSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    location:{
+        type:String,
+        required:true
+    },
     buyerName: {
         type: String,
         required: true

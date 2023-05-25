@@ -15,7 +15,10 @@ const getCompany = async (req, res) => {
 const getcompanyNames = async (req, res) => {
   try {
     const findingData = await companyModel.find({})
-    const companyNames = findingData.map(companyName => companyName.companyName)
+    const companyNames = findingData.map(item => {
+      return {companyName:item.companyName,
+        location:item.location}})
+
     return res.status(200).send(companyNames)
   } catch (error) {
 
@@ -30,7 +33,7 @@ const getCompanyBuyers = async (req, res) => {
     const query = req.query?.companyBuyers
 
     const findingData = await companyModel.findOne({ companyName: query })
-    // console.log([...findingData])
+ 
     return res.status(200).send(findingData?.buyers)
   } catch (error) {
     return res.status(404).send({ error: error.message })
@@ -62,7 +65,19 @@ const removeProducts=async(req,res)=>{
 }
 
 const getOrders=async(req,res)=>{
-  getFromDatabase(orderListModel, res, 200)
+  const page=parseFloat(req.query.page)
+  
+  try {
+    const findingData= await orderListModel.find({}).limit(10).skip(10*page)
+    const count=await orderListModel?.estimatedDocumentCount()
+    console.log(count)
+     return res.status(200).send({documentCount:count,findingData});
+   } catch (error) {
+     if(error) statusCode=404
+     console.log(error)
+     return res.status(statusCode).send({ error: error.message });
+   }
+ 
 }
 const getSingleOrder=async(req,res)=>{
   const requestedId=req.params.id
