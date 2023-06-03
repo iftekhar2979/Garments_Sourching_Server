@@ -10,7 +10,6 @@ const OrderListSchema = new mongoose.Schema({
     },
     buyerName: {
         type: String,
-        required: true
     },
     productName: {
         type: String,
@@ -85,7 +84,11 @@ const OrderListSchema = new mongoose.Schema({
             },
             totalQuantity: {
                 type: Number
+            },
+            deliveryStyleId:{
+                type:String
             }
+            
         }
     ],
     adminNote: {

@@ -1,5 +1,6 @@
 const companyModel = require("../../Schema_model/CompanySchema");
 const orderListModel = require("../../Schema_model/OrderListSchema");
+const deliveryDetailModel = require("../../Schema_model/deliveredOrderSchema");
 
 async function deleteQueryFromDatabase(collection,query,res,statusCode){
     try {
@@ -31,6 +32,10 @@ const deleteCompanyFromDatabase=async(req,res)=>{
   const query=req.query.id
   deleteQueryFromDatabase(companyModel,query,res,202)
 }
+const deleteDeliveryDetailFromDatabase=async(req,res)=>{
+  const query=req.query.id
+  deleteQueryFromDatabase(deliveryDetailModel,query,res,202)
+}
 
 
-module.exports={deleteFromDatabase,deleteQueryFromDatabase,deleteOrderFromDatabase,deleteCompanyFromDatabase}
+module.exports={deleteFromDatabase,deleteQueryFromDatabase,deleteOrderFromDatabase,deleteCompanyFromDatabase,deleteDeliveryDetailFromDatabase}

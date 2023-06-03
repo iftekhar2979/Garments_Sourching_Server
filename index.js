@@ -8,7 +8,9 @@ require("./Database/connect")
 require('dotenv').config()
 app.use(cors())
 app.use(express.json())
+app.options('*', cors()); 
 app.use(cookieParser())
+app.use(express.urlencoded());
 app.use(router)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

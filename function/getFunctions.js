@@ -70,7 +70,7 @@ const getOrders=async(req,res)=>{
   try {
     const findingData= await orderListModel.find({}).limit(10).skip(10*page)
     const count=await orderListModel?.estimatedDocumentCount()
-    console.log(count)
+   
      return res.status(200).send({documentCount:count,findingData});
    } catch (error) {
      if(error) statusCode=404

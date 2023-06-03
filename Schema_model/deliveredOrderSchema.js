@@ -13,12 +13,10 @@ const deliveredDetailSchema = new mongoose.Schema({
             },
             
             colorName:{
-                type:String,
-                
+                type:String,   
             },
             deliveryQuantity:{
                 type:Number,
-
             },
             deliverySize:{
                 type:Object
@@ -34,6 +32,9 @@ const deliveredDetailSchema = new mongoose.Schema({
             },
             totalQuantity:{
                 type:Number
+            },
+            deliveryStyleId:{
+                type:String
             }
         }
     ],
@@ -63,6 +64,9 @@ const deliveredDetailSchema = new mongoose.Schema({
     chalanNumber:{
         type:Number,
         unique:true
+    },
+    deliveryMan:{
+        type:String
     }
 })
 const deliveryDetailModel = new mongoose.model('deliverDetail', deliveredDetailSchema)

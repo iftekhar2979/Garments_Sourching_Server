@@ -7,7 +7,8 @@ const deliveryDetailModel = require("../Schema_model/deliveredOrderSchema");
 const detailsSizesAndDeliverySizes = require("./Reusable_Function/InputSizeAndDeliverySizeReducer");
 const moment = require('moment');
 const userModel = require("../Schema_model/userModel");
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const chalanModel = require("../Schema_model/ChalanSchema");
 
 
 const JWT_SECRET_KEY = '500f11bf61b94c3be5185adbf0aa5a75c37374740118103487572f0a3ffe2d98a707f479e61a66cb34dff1157f11819f678bc89404e38eebf4c580519c0dcec9'
@@ -24,23 +25,27 @@ const addOrder = async (req, res) => {
 }
 const deliveryDetail = async (req, res) => {
   const body = req.body.obj
+
   const { details } = body
-  const count = await deliveryDetailModel?.estimatedDocumentCount()
   detailsSizesAndDeliverySizes('deliverySize', details)
   detailsSizesAndDeliverySizes('size', details)
-  detailsSizesAndDeliverySizes('restSize', details)
+  // detailsSizesAndDeliverySizes('restSize', details)
+
+  //chalan number increment and edit
+  const num = await chalanModel.findById("645dcc1d5a65a1351c90c3bc")
+  const count = parseFloat(num.chalanNumber)
   if (count) {
     try {
       const currentDate = moment().format('ll');
-      const postingData = new deliveryDetailModel({ ...body, createdAt: currentDate, chalanNumber: count + 1 });
+      const postingData = new deliveryDetailModel({ ...body, createdAt: currentDate, chalanNumber: count });
       const savePostingData = await postingData.save();
       return res.status(202).send(savePostingData);
     } catch (error) {
+      let statusCode = 500
       if (error.code === 11000) {
-        return res.send({ error: 'you have already added this Challan' })
+        return res.status(statusCode).send({ error: 'You Have Added that Challan' })
       }
-      if (error) statusCode = 404;
-      console.log(error);
+      statusCode = 404
       return res.status(statusCode).send({ error: error.message });
     }
   }
@@ -150,4 +155,4 @@ const deliveryDetail = async (req, res) => {
 //   })
 
 // }
-module.exports = { addCompany, addOrder, deliveryDetail,   }
+module.exports = { addCompany, addOrder, deliveryDetail, }

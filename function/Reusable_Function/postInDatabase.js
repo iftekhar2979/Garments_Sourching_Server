@@ -10,7 +10,7 @@ async function postInDatabase(collection, postObject, res, statusCode) {
         return res.send({error:'you have already added this Company'})
       }
       if (error) statusCode = 404;
-      console.log(error);
+      console.log(error.message);
       return res.status(statusCode).send({ error: error.message });
     }
   } 

@@ -49,10 +49,7 @@ const OrderDetailSchema = new mongoose.Schema({
     },
     chalanNumber:{
         type:String,
-        unique:true
     }
-  
-
 })
 const orderDetailModel = new mongoose.model('OrderList', OrderDetailSchema)
 module.exports = orderDetailModel 
