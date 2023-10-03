@@ -4,6 +4,10 @@ const OrderListSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    shortForm:{
+        type:String,
+        required:true
+    },
     location:{
         type:String,
         required:true
@@ -20,11 +24,32 @@ const OrderListSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    tbNumber:{
+        type:String,
+        required:true,
+        validate: {
+            validator: async function (tbNumber) {
+              // Find the order with the same tbNumber
+              const orderWithTbNumber = await mongoose.model('OrderList').findOne({ tbNumber });
+      
+              // If an order with the same tbNumber is found, check the companyName
+              if (orderWithTbNumber) {
+                const company = await mongoose.model('Company').findOne({ companyName: this.companyName });
+      
+                if (company && company.companyName !== orderWithTbNumber.companyName) {
+                  return false; // Different companies can't have the same tbNumber
+                }
+              }
+      
+              return true; // The tbNumber is valid
+            },
+            message: 'Invalid tbNumber.',
+          },
+    },
     orderedDate: {
-        type: String,
+        type: Date,
         required: true
     },
-
     quantityOrder: [
         {
             style: { type: String, required: true },
@@ -44,11 +69,11 @@ const OrderListSchema = new mongoose.Schema({
     },
 
     targetDate: {
-        type: String,
+        type: Date,
         required: true
     },
     createdAt: {
-        type: String
+        type: Date
     },
     details: [
         {
@@ -56,6 +81,7 @@ const OrderListSchema = new mongoose.Schema({
                 type: String,
                 
             },
+           
             style: {
                 type: String,
             },
@@ -65,6 +91,9 @@ const OrderListSchema = new mongoose.Schema({
             colorName: {
                 type: String,
 
+            },
+            poNumber:{
+                type:String
             },
             deliveryQuantity: {
                 type: Number,
@@ -95,7 +124,7 @@ const OrderListSchema = new mongoose.Schema({
         type: String,
     },
     completeDate: {
-        type: String,
+        type: Date
 
     },
     grandDeliveryTotal: {
@@ -113,6 +142,9 @@ const OrderListSchema = new mongoose.Schema({
     status: {
         type: String,
 
+    },
+    cartoonSticker:{
+        type:Boolean,
     }
 
 })

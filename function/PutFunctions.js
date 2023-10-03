@@ -23,8 +23,7 @@ const editTotalOrderDetails = async (req, res) => {
    try {
       const requestedId = req.params.id
       const body = req.body
-      // console.log(body)
-      const { details } = req.body
+      const { details=[] } = req.body
      
       detailsSizesAndDeliverySizes('size',details)
       detailsSizesAndDeliverySizes('restSize',details)

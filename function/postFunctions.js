@@ -9,23 +9,25 @@ const moment = require('moment');
 const userModel = require("../Schema_model/userModel");
 const bcrypt = require('bcryptjs');
 const chalanModel = require("../Schema_model/ChalanSchema");
+const piModel = require("../Schema_model/PiSchema");
 
 
 const JWT_SECRET_KEY = '500f11bf61b94c3be5185adbf0aa5a75c37374740118103487572f0a3ffe2d98a707f479e61a66cb34dff1157f11819f678bc89404e38eebf4c580519c0dcec9'
 module.exports = JWT_SECRET_KEY
 const addCompany = async (req, res) => {
-  const body = req.body.obj
+  const body = req.body
+  console.log(body)
   postInDatabase(companyModel, body, res, 200)
 
 }
 const addOrder = async (req, res) => {
   const body = req.body
-  // console.log(body)
-  postInDatabase(orderListModel, body, res, 201)
+  postInDatabase(orderListModel, body, res, 200)
 }
 const deliveryDetail = async (req, res) => {
-  const body = req.body.obj
+  const body = req.body
 
+  console.log(body)
   const { details } = body
   detailsSizesAndDeliverySizes('deliverySize', details)
   detailsSizesAndDeliverySizes('size', details)
@@ -36,7 +38,7 @@ const deliveryDetail = async (req, res) => {
   const count = parseFloat(num.chalanNumber)
   if (count) {
     try {
-      const currentDate = moment().format('ll');
+      const currentDate=new Date();
       const postingData = new deliveryDetailModel({ ...body, createdAt: currentDate, chalanNumber: count });
       const savePostingData = await postingData.save();
       return res.status(202).send(savePostingData);
@@ -49,8 +51,12 @@ const deliveryDetail = async (req, res) => {
       return res.status(statusCode).send({ error: error.message });
     }
   }
-
 }
+const postPI=async(req,res)=>{
+  const body = req.body
+ postInDatabase(piModel,body,res,202)
+}
+
 // const signUp = async (req, res) => {
 //   const { name, email, password } = req.body
 //   const findEmailUnique = await userModel.findOne({ email })
@@ -155,4 +161,4 @@ const deliveryDetail = async (req, res) => {
 //   })
 
 // }
-module.exports = { addCompany, addOrder, deliveryDetail, }
+module.exports = { addCompany,postPI, addOrder, deliveryDetail, }

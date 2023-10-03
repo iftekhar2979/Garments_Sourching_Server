@@ -22,7 +22,11 @@ buyers:{
     required:true
 },
 createdAt:{
+    type:Date,
+},
+shortForm:{
     type:String,
+    required:true
 }
 
 })

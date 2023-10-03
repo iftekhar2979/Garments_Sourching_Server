@@ -38,8 +38,12 @@ const deliveredDetailSchema = new mongoose.Schema({
             }
         }
     ],
-    completeDate:{
+    tbNumber:{
         type:String,
+        required:true
+    },
+    completeDate:{
+        type:Date,
         
     },
     grandDeliveryQuantity:{
@@ -48,16 +52,23 @@ const deliveredDetailSchema = new mongoose.Schema({
     },
     grandRestQuantity:{
         type:Number,
+
         
     },
     deliveredAt:{
         type:String,
     },
+    productName:{
+        type:String,
+        required:true
+    },
     orderId:{
-        type:String
+        type:String,
+        required:true
     },
     orderNumber:{
-        type:String
+        type:String,
+        required:true
     },createdAt:{
         type:String
     },
