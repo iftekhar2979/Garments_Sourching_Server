@@ -189,7 +189,7 @@ const getFilterOrders = async (req, res) => {
     return res.status(200).send({ documentCount: count, findingData });
   } catch (error) {
     if (error) statusCode = 404
-    console.log(error)
+  
     return res.status(statusCode).send({ error: error.message });
   }
 

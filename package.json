@@ -19,6 +19,8 @@
     "moment": "^2.29.4",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.3",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "preloader": "^4.0.3",
+    "simple-update-notifier": "^2.0.0"
   }
 }
