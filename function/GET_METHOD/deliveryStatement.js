@@ -2,7 +2,7 @@ const deliveryDetailModel = require("../../Schema_model/deliveredOrderSchema")
 
 const getDeliveryStateMent = async (req, res) => {
  
-    const body = req.body
+    const body = req.body.selectedValue
     console.log(body)
 try{
   const findingValue = await deliveryDetailModel.aggregate([

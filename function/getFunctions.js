@@ -322,36 +322,59 @@ const getPiByRange = async (req, res) => {
           }
         },
         {
-          $group: {
-            _id: {
-              productName: '$productName',
-              companyName: '$companyName',
-              shortForm: '$shortForm'
+          $group:
+            /**
+             * _id: The id of the group.
+             * fieldN: The first field name.
+             */
+            {
+              _id: {
+                productName: "$productName",
+                companyName: "$companyName",
+                shortForm: "$shortForm",
+                buyerName: "$buyerName",
+                location: "$location",
+              },
+              totalQuantity: {
+                $sum: "$grandTotalQuantity",
+              },
             },
-            totalQuantity: {
-              $sum: '$grandTotalQuantity'
-            }
-          }
         },
         {
-          $group: {
-            _id: {
-              productName: '$_id.productName',
-              companyName: '$_id.companyName',
-              shortForm: '$_id.shortForm'
+          $group:
+            /**
+             * _id: The id of the group.
+             * fieldN: The first field name.
+             */
+            {
+              _id: {
+                productName: "$_id.productName",
+                companyName: "$_id.companyName",
+                shortForm: "$_id.shortForm",
+                buyerName: "$_id.buyerName",
+                location: "$_id.location",
+              },
+              totalQuantity: {
+                $sum: "$totalQuantity",
+              },
             },
-            totalQuantity: { $sum: '$totalQuantity' }
-          }
         },
         {
-          $project: {
-            _id: 0,
-            productName: '$_id.productName',
-            companyName: '$_id.companyName',
-            shortForm: '$_id.shortForm',
-            totalQuantity: 1
-          }
-        }
+          $project:
+            /**
+             * specifications: The fields to
+             *   include or exclude.
+             */
+            {
+              _id: 0,
+              productName: "$_id.productName",
+              companyName: "$_id.companyName",
+              shortForm: "$_id.shortForm",
+              buyerName: "$_id.buyerName",
+              location: "$_id.location",
+              totalQuantity: 1,
+            },
+        },
       ],
       { maxTimeMS: 60000, allowDiskUse: true }
     );
