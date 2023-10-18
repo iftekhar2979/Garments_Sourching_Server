@@ -40,7 +40,7 @@ const deliveredDetailSchema = new mongoose.Schema({
     ],
     tbNumber:{
         type:String,
-        required:true
+        
     },
     completeDate:{
         type:Date,

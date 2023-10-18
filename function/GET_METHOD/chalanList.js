@@ -60,7 +60,7 @@ const getChalanList = async (req, res) => {
                 },
                 {
                     $sort: {
-                        chalanNumber: 1, // Sort by chalanNumber in ascending order
+                        chalanNumber: -1, // Sort by chalanNumber in ascending order
                     },
                 },
                 {
@@ -161,7 +161,7 @@ const getChalanList = async (req, res) => {
                 },
                 {
                     $sort: {
-                        chalanNumber: 1, // Sort by chalanNumber in ascending order
+                        chalanNumber: -1, // Sort by chalanNumber in ascending order
                     },
                 },
                 {

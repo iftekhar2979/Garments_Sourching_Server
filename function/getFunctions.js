@@ -76,7 +76,7 @@ const removeProducts = async (req, res) => {
 const getOrders = async (req, res) => {
   const page = parseFloat(req.query.page)
   try {
-    const findingData = await orderListModel.find({}, { companyName: 1, buyerName: 1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt: -1 }).limit(15).skip(15 * page)
+    const findingData = await orderListModel.find({}, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt: -1 }).limit(15).skip(15 * page)
     const count = await orderListModel?.estimatedDocumentCount()
     return res.status(200).send({ documentCount: count, findingData });
   } catch (error) {
@@ -230,6 +230,7 @@ const getSearchedOrder = async (req, res) => {
 
 const getSingleOrder = async (req, res) => {
   const requestedId = req.params.id
+  console.log(requestedId)
   getQueryFromDatabase(orderListModel, requestedId, res, 200)
 }
 const getDeliveryDetail = async (req, res) => {
@@ -322,36 +323,59 @@ const getPiByRange = async (req, res) => {
           }
         },
         {
-          $group: {
-            _id: {
-              productName: '$productName',
-              companyName: '$companyName',
-              shortForm: '$shortForm'
+          $group:
+            /**
+             * _id: The id of the group.
+             * fieldN: The first field name.
+             */
+            {
+              _id: {
+                productName: "$productName",
+                companyName: "$companyName",
+                shortForm: "$shortForm",
+                buyerName: "$buyerName",
+                location: "$location",
+              },
+              totalQuantity: {
+                $sum: "$grandTotalQuantity",
+              },
             },
-            totalQuantity: {
-              $sum: '$grandTotalQuantity'
-            }
-          }
         },
         {
-          $group: {
-            _id: {
-              productName: '$_id.productName',
-              companyName: '$_id.companyName',
-              shortForm: '$_id.shortForm'
+          $group:
+            /**
+             * _id: The id of the group.
+             * fieldN: The first field name.
+             */
+            {
+              _id: {
+                productName: "$_id.productName",
+                companyName: "$_id.companyName",
+                shortForm: "$_id.shortForm",
+                buyerName: "$_id.buyerName",
+                location: "$_id.location",
+              },
+              totalQuantity: {
+                $sum: "$totalQuantity",
+              },
             },
-            totalQuantity: { $sum: '$totalQuantity' }
-          }
         },
         {
-          $project: {
-            _id: 0,
-            productName: '$_id.productName',
-            companyName: '$_id.companyName',
-            shortForm: '$_id.shortForm',
-            totalQuantity: 1
-          }
-        }
+          $project:
+            /**
+             * specifications: The fields to
+             *   include or exclude.
+             */
+            {
+              _id: 0,
+              productName: "$_id.productName",
+              companyName: "$_id.companyName",
+              shortForm: "$_id.shortForm",
+              buyerName: "$_id.buyerName",
+              location: "$_id.location",
+              totalQuantity: 1,
+            },
+        },
       ],
       { maxTimeMS: 60000, allowDiskUse: true }
     );

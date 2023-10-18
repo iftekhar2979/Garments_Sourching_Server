@@ -10,6 +10,12 @@ const { getProductSummary } = require('../function/summaryDatabase');
 const {getDeliveryStateMent} =require('../function/GET_METHOD/deliveryStatement');
 const { getUniqueTb } = require('../function/GET_METHOD/tblist');
 const { getChalanList } = require('../function/GET_METHOD/chalanList');
+const { getPiStatement, getPiList } = require('../function/GET_METHOD/piStatement');
+// const deliveryMan = require('../Schema_model/DeliveryManSchema');
+const deliveryMan = require('../Schema_model/DeliveryManSchema');
+const { type } = require('express/lib/response');
+const deliveryManModel = require('../Schema_model/DeliveryManSchema');
+const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
 // const { getUniqueTb }=require("../function/GET_METHOD/tbList")
 const router = new express.Router();
 router.get('/', async (req, res) => {
@@ -47,7 +53,19 @@ router.get('/tbList',getUniqueTb)
 router.post('/deliveryStatement',getDeliveryStateMent)
 router.get('/productSummary',getProductSummary)
 router.get('/chalanLists',getChalanList)
-
+router.get('/piStatement/:id',getPiStatement)
+router.get('/piList',getPiList)
+router.get('/deliveryMan/:id',async(req,res)=>{
+    try {
+        const requestedId = req.params.id
+        // console.log(requestedId)
+        const findingData = await deliveryManModel.findById(requestedId)
+      
+        return res.send(findingData)
+      } catch (error) {
+        return res.send({ error: error.message })
+      }
+})
 //____________END_____GET_______________
 
 
@@ -63,6 +81,7 @@ router.post('/addOrder', addOrder)
 router.post('/deliverDetail', deliveryDetail)
 //ADDING ORDER TO PI
 router.post('/addPi',postPI)
+router.post('/order/copy/:id',postCopyOrder)
 //____________END_____POST_OPERATIONS_______________
 
 
@@ -87,6 +106,20 @@ router.patch('/orderList/:id',async(req,res)=>{
         return res.status(204).send({error:error.message})
     }   
  
+})
+router.patch('/deliveryMan/:id',async(req,res)=>{
+    try {
+        const requestedId = req.params.id
+      
+        const puttingData = await deliveryManModel.findByIdAndUpdate(requestedId, { $push: { deliveryMan: { $each: req.body } } }, {
+           new: true,
+           upsert: true,
+        })
+  
+        return res.send({ updated: true, puttingData })
+     } catch (error) {
+        return res.send({ error: error.message })
+     }
 })
 
 //______END_____PUT_____OPERATIONS___________
