@@ -1,6 +1,6 @@
 
 const express = require('express');
-const { addCompany, addOrder, deliveryDetail, signUp, login, verifyJwt, getUser, refreshToken, postPI } = require('./../function/postFunctions')
+const { addCompany, addOrder, deliveryDetail,  login, verifyJwt, getUser,  postPI, refreshToken } = require('./../function/postFunctions')
 const { getCompanyBuyers, getcompanyNames, getCompany, getProducts, removeProducts, getOrders, getSingleOrder, getDeliveryDetail, getSingleDeliverDetail, getFilteredLists, getPiByRange, getFilterOrders, getBuyers, getSearchedOrder } = require('./../function/getFunctions')
 const { addProducts, editTotalOrderDetails } = require('../function/PutFunctions');
 const { deleteFromDatabase, deleteOrderFromDatabase, deleteCompanyFromDatabase, deleteDeliveryDetailFromDatabase } = require('../function/Reusable_Function/DeleteFromDatabase');
@@ -16,6 +16,8 @@ const deliveryMan = require('../Schema_model/DeliveryManSchema');
 const { type } = require('express/lib/response');
 const deliveryManModel = require('../Schema_model/DeliveryManSchema');
 const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
+const { piNamePatch } = require('../function/PATCH_METHOD/PiPatch');
+const { deletePi } = require('../function/DELETE_METHOD/DeletePi');
 // const { getUniqueTb }=require("../function/GET_METHOD/tbList")
 const router = new express.Router();
 router.get('/', async (req, res) => {
@@ -38,10 +40,11 @@ router.get('/deliveryDetail/:id', getDeliveryDetail)
 router.get('/singleDeliveryDetail/:id', getSingleDeliverDetail)
 //GET FILTERED DATA
 router.get('/orderList',getOrders)
+router.get('/login',login)
 //GETTING USER
-// router.get('/user', verifyJwt,getUser)
+router.get('/user',verifyJwt,getUser)
 //GETTING REFRESH TOKENS
-// router.get('/refresh',refreshToken,verifyJwt,getUser)
+router.get('/refresh',refreshToken,verifyJwt,getUser)
 // router.get('/')
 //GETTING FILTERED DATA
 router.get('/filterOrderList',getFilterOrders)
@@ -60,7 +63,6 @@ router.get('/deliveryMan/:id',async(req,res)=>{
         const requestedId = req.params.id
         // console.log(requestedId)
         const findingData = await deliveryManModel.findById(requestedId)
-      
         return res.send(findingData)
       } catch (error) {
         return res.send({ error: error.message })
@@ -110,7 +112,6 @@ router.patch('/orderList/:id',async(req,res)=>{
 router.patch('/deliveryMan/:id',async(req,res)=>{
     try {
         const requestedId = req.params.id
-      
         const puttingData = await deliveryManModel.findByIdAndUpdate(requestedId, { $push: { deliveryMan: { $each: req.body } } }, {
            new: true,
            upsert: true,
@@ -121,6 +122,7 @@ router.patch('/deliveryMan/:id',async(req,res)=>{
         return res.send({ error: error.message })
      }
 })
+router.patch('/piName/:id',piNamePatch)
 
 //______END_____PUT_____OPERATIONS___________
 
@@ -140,7 +142,7 @@ router.patch('/selectDeliveryMan/:id', editDeliveryMan)
 router.patch('/deleteDeliveryDetail', deleteDeliveryDetail)
 //____________END_____________PATCH__________OPERATIONS___________
 
-//________________DELETE_________________OPERATIONS__________________
+//________________DELETE_________________OPERATIONS_______________
 //REMOVING PRODUCT FROM PRODUCT LIST
 router.delete('/products/:id', removeProducts)
 //REMOVING ORDER FROM ORDER LIST
@@ -151,6 +153,7 @@ router.delete('/companyList', deleteCompanyFromDatabase)
 router.delete('/deleteOrder', async (req, res) => {
     deleteFromDatabase(orderListModel, res)
 })
+router.delete('/deletePi',deletePi)
 //REMOVE DELIVERY DETAIL'S FROM SINGLE ORDER OR TARGATED ORDER
 router.delete('/deleteDeliveryDetail',deleteDeliveryDetailFromDatabase)
 
