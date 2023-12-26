@@ -76,7 +76,7 @@ const removeProducts = async (req, res) => {
 const getOrders = async (req, res) => {
   const page = parseFloat(req.query.page)
   try {
-    const findingData = await orderListModel.find({}, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt: -1 }).limit(15).skip(15 * page)
+    const findingData = await orderListModel.find({}, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt:-1}).limit(15).skip(15 * page)
     const count = await orderListModel?.estimatedDocumentCount()
     return res.status(200).send({ documentCount: count, findingData });
   } catch (error) {
@@ -173,17 +173,15 @@ const getBuyers = async (req, res) => {
 const getFilterOrders = async (req, res) => {
 
   const query = req.query
-
   const page =parseFloat(req.query?.page)
-  // console.log(query)
-  // console.log(page)
+
   const keyofQuery=Object.keys(req.query)
   const ValueOfQuery=Object.values(req.query)
   let findtheQuery={[keyofQuery[0]]:ValueOfQuery[0]}
   // console.log(findtheQuery)
 
   try {
-    const findingData = await orderListModel.find(findtheQuery).sort({ createdAt: -1 }).limit(15).skip(15 * page)
+    const findingData = await orderListModel.find(findtheQuery, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt: -1 }).limit(15).skip(15 * page)
     // console.log(findingData)
     const count = await orderListModel.countDocuments(findtheQuery)
     return res.status(200).send({ documentCount: count, findingData });
@@ -197,19 +195,9 @@ const getFilterOrders = async (req, res) => {
 const getSearchedOrder = async (req, res) => {
   const orderNumber = req.query.orderNumber;
   const page =parseFloat(req.query?.page)
-  // console.log(query)
-  // console.log(page)
-  const keyofQuery=Object.keys(req.query)
-  const ValueOfQuery=Object.values(req.query)
-  let findtheQuery={[keyofQuery[0]]:ValueOfQuery[0]}
-  // console.log(findtheQuery)
-  // console.log(orderNumber)
-  const searchQuery = {
-    orderNumber: {
-      $regex: orderNumber,
-      $options: 'i' // Case-insensitive search
-    }
-  };
+
+  console.log(orderNumber)
+
   const searchTBandOrder={
     $or: [
       {range:{$regex:orderNumber,$options:'i'}},
@@ -221,7 +209,7 @@ const getSearchedOrder = async (req, res) => {
   try {
     const findingData = await orderListModel.find(searchTBandOrder).sort({ createdAt: -1 }).limit(15).skip(15 * page);
     const count = await orderListModel.countDocuments(searchTBandOrder)
-    // console.log()
+  
     return res.status(200).send({ documentCount: count, findingData });
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });

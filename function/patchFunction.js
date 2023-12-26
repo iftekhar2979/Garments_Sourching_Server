@@ -53,8 +53,7 @@ const editDeliveryMan=async(req,res)=>{
  const increaseChalan=async(req,res)=>{
     const counterId=req.params.id
     const query=req.query
-    console.log('query',query)
-    console.log('counterId',counterId)
+
     try {
         const num = await chalanModel.findById(counterId)
         if(counterId==="645dcc1d5a65a1351c90c3bc"){

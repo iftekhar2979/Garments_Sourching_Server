@@ -8,7 +8,7 @@ const getPiStatement = async (req, res) => {
 }
 const getPiList = async (req, res) => {
     try {
-        const findingValue = await piModel.find({}, { companyName:1, piNumber:1, totalQuantity:1, totalAmount:1,_id:1,tbNumbers:1,createdAt:1 })
+        const findingValue = await piModel.find({}, { companyName:1, piNumber:1, totalQuantity:1, totalAmount:1,_id:1,tbNumbers:1,createdAt:1 }).sort({ createdAt: -1 })
         res.send(findingValue)
     } catch (error) {
       res.send(error)
