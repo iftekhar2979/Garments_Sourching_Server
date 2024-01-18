@@ -8,12 +8,10 @@ const orderListModel = require('../Schema_model/OrderListSchema');
 const { editOrderDetail, editStatus, editDeliveryMan, increaseChalan, decreaseChalan, deleteDeliveryDetail } = require('../function/patchFunction');
 const { getProductSummary } = require('../function/summaryDatabase');
 const {getDeliveryStateMent} =require('../function/GET_METHOD/deliveryStatement');
-const { getUniqueTb } = require('../function/GET_METHOD/tblist');
+// const { getUniqueTb } = require('../function/GET_METHOD/tbList');
 const { getChalanList } = require('../function/GET_METHOD/chalanList');
-const { getPiStatement, getPiList } = require('../function/GET_METHOD/piStatement');
-// const deliveryMan = require('../Schema_model/DeliveryManSchema');
-const deliveryMan = require('../Schema_model/DeliveryManSchema');
-const { type } = require('express/lib/response');
+const { getPiStatement, getPiList, getUniqueTb, getAllTbLists } = require('../function/GET_METHOD/piStatement');
+const piModel = require("../Schema_model/PiSchema")
 const deliveryManModel = require('../Schema_model/DeliveryManSchema');
 const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
 const { piNamePatch } = require('../function/PATCH_METHOD/PiPatch');
@@ -52,7 +50,7 @@ router.get('/filterOrderList',getFilterOrders)
 router.post('/pi',getPiByRange)
 router.get('/buyers',getBuyers)
 router.get('/search',getSearchedOrder)
-router.get('/tbList',getUniqueTb)
+router.get('/tbList',getAllTbLists)
 router.post('/deliveryStatement',getDeliveryStateMent)
 router.get('/productSummary',getProductSummary)
 router.get('/chalanLists',getChalanList)
