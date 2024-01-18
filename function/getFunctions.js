@@ -172,7 +172,6 @@ const getBuyers = async (req, res) => {
 }
 const getFilterOrders = async (req, res) => {
 
-  const query = req.query
   const page =parseFloat(req.query?.page)
 
   const keyofQuery=Object.keys(req.query)
