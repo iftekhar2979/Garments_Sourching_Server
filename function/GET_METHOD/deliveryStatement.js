@@ -51,7 +51,8 @@ const getDeliveryStateMent = async (req, res) => {
           deliveryCount: 1,
           chalanInfo: 1
         }
-      }
+      }, 
+  
 
     ],
       { maxTimeMS: 60000, allowDiskUse: true })

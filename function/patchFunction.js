@@ -87,6 +87,8 @@ const editDeliveryMan=async(req,res)=>{
     try{
     const findFromDelivery = await deliveryDetailModel.findById(reqId)
     const findFromOrder = await orderListModel.findById(postId)
+    const num = await chalanModel.findById(counterId)
+    const count = parseFloat(num.chalanNumber)
     const findDocDetails = findFromDelivery?.details
     const findOrderDetails = findFromOrder?.details
     findOrderDetails?.forEach(item => {        
