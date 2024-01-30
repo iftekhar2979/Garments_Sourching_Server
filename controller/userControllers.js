@@ -82,7 +82,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     name: req.user.name,
     email: req.user.email,
     isAdmin: req.user.isAdmin,
-    mybookings: req.user.mybookings,
+    
   };
   res.status(200).json({ data });
 });
