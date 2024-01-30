@@ -12,7 +12,12 @@ email:{
 password:{
     type:String,
     required:true,
-}
+},
+isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 })
 const userModel = new mongoose.model('users', userSchema)
 module.exports = userModel
+

@@ -217,7 +217,7 @@ const getSearchedOrder = async (req, res) => {
 
 const getSingleOrder = async (req, res) => {
   const requestedId = req.params.id
-  console.log(requestedId)
+
   getQueryFromDatabase(orderListModel, requestedId, res, 200)
 }
 const getDeliveryDetail = async (req, res) => {

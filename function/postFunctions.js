@@ -74,7 +74,8 @@ const signUp = async (req, res) => {
   }
 }
 const login = async (req, res) => {
-  const { name, email, password } = req.body
+  const { name, email, password } = req.query
+
   let existingUser;
   try {
     existingUser = await userModel.findOne({ email })
@@ -88,7 +89,7 @@ const login = async (req, res) => {
   if (!isPasswordCorrect) {
     return res.status(401).send({ message: 'Invalid Email and Password' })
   }
-  const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, { expiresIn: '30s' })
+  const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, { expiresIn: '1d' })
 
   if (req.cookies[`${existingUser._id}`]) {
     req.cookies[`${existingUser._id}`] = ''
@@ -105,6 +106,7 @@ const login = async (req, res) => {
 
 const verifyJwt = async (req, res, next) => {
   const cookies = req.headers?.cookie;
+  console.log(req.headers)
   const token = cookies.split('=')[1]
 
   if (!token) {
@@ -139,27 +141,30 @@ const refreshToken = (req, res, next) => {
   if (!prevToken) {
     return res.status(400).send({ message: 'Could not find the token' })
   }
-console.log(String(prevToken))
-  jwt.verify(String(prevToken), JWT_SECRET_KEY, (error, decoded) => {
-    if (error) {
-      console.log(error)
-      return res.status(403).send({ message: 'Authentication failed' })
-
+  console.log(String(prevToken))
+  jwt.verify(String(prevToken), JWT_SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(403).json({ message: "Authentication failed" });
     }
-    console.log('decode',decoded.id)
-    res.clearCookie(`${decoded.id}`)
-    req.cookies[`${decoded.id}`] = ''
-    const token = jwt.sign({ id: decoded.id }, JWT_SECRET_KEY, { expiresIn: '30s' })
-    console.log("Regen/n",token)
-    res.cookie(String(decoded.id), token, {
-      path: '/',
-      expiresIn: new Date(Date.now() + 1000 * 30),
-      httpOnly: true,
-      sameSite: 'lax'
-    })
-    req.id = decoded.id
-    next()
-  })
+    res.clearCookie(`${user.id}`);
+    req.cookies[`${user.id}`] = "";
 
-}
-module.exports = { addCompany, postPI, addOrder, deliveryDetail,verifyJwt,getUser,login ,refreshToken}
+    const token = jwt.sign({ id: user.id }, JWT_SECRET_KEY, {
+      expiresIn: "35s",
+    });
+    console.log("Regenerated Token\n", token);
+
+    res.cookie(String(user.id), token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 30), // 30 seconds
+      httpOnly: true,
+      sameSite: "lax",
+    });
+
+    req.id = user.id;
+    next();
+  });
+};
+
+module.exports = { addCompany, postPI, addOrder, deliveryDetail, verifyJwt, getUser, login, refreshToken }
