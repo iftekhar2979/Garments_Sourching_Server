@@ -8,7 +8,7 @@ const jwt=require('jsonwebtoken')
     console.log('token',token)
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: "Strict",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });

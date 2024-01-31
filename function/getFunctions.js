@@ -195,8 +195,6 @@ const getSearchedOrder = async (req, res) => {
   const orderNumber = req.query.orderNumber;
   const page =parseFloat(req.query?.page)
 
-  console.log(orderNumber)
-
   const searchTBandOrder={
     $or: [
       {range:{$regex:orderNumber,$options:'i'}},
