@@ -6,11 +6,11 @@ const asyncHandler=require('express-async-handler');
   let token;
 
   token = req.cookies?.jwt;
-console.log(token)
+
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded)
+    
       req.user = await userModel.findById(decoded.userId).select("-password");
       next();
     } catch (err) {
