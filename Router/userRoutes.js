@@ -14,7 +14,7 @@ router.route("/signin").post(loginUser);
 router.route("/logout").post(logoutUser);
 
 //Get profile
-router.route("/profile").get(protect, getUserProfile);
+router.get("/profile",protect, getUserProfile);
 
 // Update User Data
 router.route("/profile").put(protect, updateUserProfile);
