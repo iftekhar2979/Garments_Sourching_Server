@@ -2,6 +2,9 @@ const jwt=require('jsonwebtoken')
 
  const generateToken = (res, userId) => {
   try {
+    console.log('userId',userId)
+    
+
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
       expiresIn: "30d",
     });

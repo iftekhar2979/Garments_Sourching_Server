@@ -10,6 +10,7 @@ const asyncHandler=require('express-async-handler');
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     
       req.user = await userModel.findById(decoded.userId).select("-password");
       next();
