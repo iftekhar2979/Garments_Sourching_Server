@@ -84,6 +84,7 @@ router.put('/addProducts/:id',protect, addProducts)
 
 
 router.patch('/deliveryMan/:id',async(req,res)=>{
+  
     try {
         const requestedId = req.params.id
         const puttingData = await deliveryManModel.findByIdAndUpdate(requestedId, { $push: { deliveryMan: { $each: req.body } } }, {
