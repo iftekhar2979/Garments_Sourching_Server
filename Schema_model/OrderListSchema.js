@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const companyModel = require('./CompanySchema');
 const OrderListSchema = new mongoose.Schema({
   
     companyName: {
@@ -15,7 +16,8 @@ const OrderListSchema = new mongoose.Schema({
         required:true
     },
     buyerName: {
-        type: String,
+        type: String,  
+        
     },
     productName: {
         type: String,
@@ -73,6 +75,9 @@ const OrderListSchema = new mongoose.Schema({
     targetDate: {
         type: Date,
         required: true
+    },
+    season:{
+        type:String
     },
     createdAt: {
         type: Date
@@ -150,5 +155,23 @@ const OrderListSchema = new mongoose.Schema({
     }
 
 })
+OrderListSchema.pre('save', async function (next) {
+    const order = this;
+
+    // Find the company by its shortForm or companyName
+    const company = await companyModel.findOne({companyName: order.companyName });
+ 
+    if (!company) {
+      throw new Error('Company not found');
+    }
+  
+    // Check if the buyerName is in the company's buyers array
+    if (!company.buyers.includes(order.buyerName)) {
+      throw new Error('Buyer does not belong to the specified company');
+    }
+  
+    next();
+  });
+  
 const orderListModel = new mongoose.model('OrderList', OrderListSchema)
 module.exports = orderListModel

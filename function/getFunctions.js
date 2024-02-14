@@ -90,57 +90,71 @@ const getBuyers = async (req, res) => {
   try {
     const piplineForEveryThing=[
       {
-        $unwind:
-
-          {
-            path: "$buyers",
-            includeArrayIndex:"String",
-            preserveNullAndEmptyArrays:false
-          },
-      },
-      {
-        $group: 
-      {
-      _id:null,
-        buyers:{$addToSet:"$buyers"},
-        companyName:{$addToSet:"$companyName"},
-      }
-      },
-        {
-          $lookup: {
-            from: "products",
-            localField: "products",
-            foreignField:"productNames",
-            as: "productArray"
-          }
+        $unwind: {
+          path: "$buyers",
+          includeArrayIndex: "String",
+          preserveNullAndEmptyArrays: false,
         },
-        {
-        $unwind:
-      
-          {
-            path: "$productArray",
-            
-          },
       },
-         {
-           $group: {
-             _id: {
-               uniqueBuyer:"$buyers",
-               companyName:"$companyName",
-               products:"$productArray.products"
-             }
-           }
-         },
-        {
-          $project: {
-            _id:0,
-            buyerList:"$_id.uniqueBuyer",
-            companyList:"$_id.companyName",
-            productList:"$_id.products"
-          }
-        }
-        
-      ]
+      {
+        $group: {
+          _id: null,
+          buyers: {
+            $addToSet: "$buyers",
+          },
+          companyName: {
+            $addToSet: "$companyName",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products",
+          foreignField: "productNames",
+          as: "productArray",
+        },
+      },
+      {
+        $unwind: {
+          path: "$productArray",
+        },
+      },
+      {
+        $lookup: {
+          from: "orderlists",
+          localField: "companyName",
+          foreignField: "companyName",
+          as: "seasonArray",
+        },
+      },
+      {
+        $unwind: {
+          path: "$seasonArray",
+        },
+      },
+      {
+        $group: {
+          _id: {
+            uniqueBuyers: "$buyers",
+            companyName: "$companyName",
+            products: "$productArray.products",
+          },
+          season: {
+            $addToSet: "$seasonArray.season",
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          buyerList: "$_id.uniqueBuyers",
+          companyList: "$_id.companyName",
+          seasonList: "$season",
+          productList: "$_id.products",
+        },
+      },
+    ]
     // const pipeline = [
     //   {
     //     $match: {

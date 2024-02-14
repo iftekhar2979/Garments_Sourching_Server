@@ -30,23 +30,14 @@ router.get('/companyNames',protect, getcompanyNames)
 //GET THE PRODUCT'S 
 router.get('/products/:id',protect, getProducts)
 //GET ORDER LISTS
-router.get('/orderList',protect, getOrders)
-//GET SINGLE ORDER LIST 
-router.get('/orderList/:id',protect, getSingleOrder)
+// router.get('/orderList',protect, getOrders)
+
 //GET DELIVERY DETAILS OF AN ORDER
 router.get('/deliveryDetail/:id',protect, getDeliveryDetail)
 //GET A SINGLE DELIVERY DETAIL OF AN ORDER
 router.get('/singleDeliveryDetail/:id',protect, getSingleDeliverDetail)
-//GET FILTERED DATA
-router.get('/orderList',protect,getOrders)
-// router.get('/login',login)
-//GETTING USER
-// router.get('/user',verifyJwt,getUser)
-//GETTING REFRESH TOKENS
-// router.get('/refresh',refreshToken,verifyJwt,getUser)
-// router.get('/')
-//GETTING FILTERED DATA
-router.get('/filterOrderList',getFilterOrders)
+
+
 //GETTING PI DATA
 router.post('/pi',protect,getPiByRange)
 router.get('/buyers',protect,getBuyers)
@@ -57,6 +48,7 @@ router.get('/productSummary',protect,getProductSummary)
 router.get('/chalanLists',protect,getChalanList)
 router.get('/piStatement/:id',protect,getPiStatement)
 router.get('/piList',protect,getPiList)
+
 router.get('/deliveryMan/:id',async(req,res)=>{
     try {
         const requestedId = req.params.id
@@ -82,32 +74,15 @@ router.post('/addOrder', protect,addOrder)
 router.post('/deliverDetail', protect,deliveryDetail)
 //ADDING ORDER TO PI
 router.post('/addPi',protect,postPI)
-router.post('/order/copy/:id',protect,postCopyOrder)
+
 //____________END_____POST_OPERATIONS_______________
 
 
 //________________________PUT__________OPERATIONS____________________
 //ADDING PRODUCTS API
 router.put('/addProducts/:id',protect, addProducts)
-//SINGLE ORDER PUT THE TOTAL SIZE AND REST SIZE
-router.put('/addTotalOrder/:id',protect, editOrderDetail)
-//UPDATING THE COMPLETED DATE
-router.put('/editDate/:id',protect, editOrderDetail)
-//UPDATE THE ORDER
-router.patch('/orderList/:id',async(req,res)=>{
-    const requestedId=req.params.id
-    const obj=req.body.object
-    try{
-        const patchingData=await orderListModel.findByIdAndUpdate(requestedId,obj,{
-            new: true,
-         })
-        return res.status(200).send(patchingData)
-    }catch(error){
-        console.log(error)
-        return res.status(204).send({error:error.message})
-    }   
- 
-})
+
+
 router.patch('/deliveryMan/:id',async(req,res)=>{
     try {
         const requestedId = req.params.id
@@ -127,10 +102,7 @@ router.patch('/piName/:id',protect,piNamePatch)
 
 
 //________________PATCH___________________OPERATIONS_________________________
-//FOR EVERY DELIVERY IT WILL EDIT TARGETED ORDER'S MAIN OBJECT
-router.patch('/addTotalOrder/:id',protect, editTotalOrderDetails)
-//CHANGING THE STATUS OF A SINGLE ORDER
-router.patch('/editStatus/:id', protect,editStatus)
+
 //INCREASING CHALLAN NUMBER 
 router.patch('/chalanNumber/:id',protect, increaseChalan)
 //DECREASING CHALLAN NUMBER
@@ -149,9 +121,7 @@ router.delete('/orderList',protect, deleteOrderFromDatabase)
 //REMOVE COMPANY FROM COMPANY LIST
 router.delete('/companyList', protect,deleteCompanyFromDatabase)
 
-router.delete('/deleteOrder',protect, async (req, res) => {
-    deleteFromDatabase(orderListModel, res)
-})
+
 router.delete('/deletePi',protect,deletePi)
 //REMOVE DELIVERY DETAIL'S FROM SINGLE ORDER OR TARGATED ORDER
 router.delete('/deleteDeliveryDetail',protect,deleteDeliveryDetailFromDatabase)

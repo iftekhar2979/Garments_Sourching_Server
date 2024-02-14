@@ -1,5 +1,6 @@
 const { type } = require('express/lib/response');
-const moment=require('moment')
+const moment=require('moment');
+const { registerUser } = require('../../controller/userControllers');
 async function postInDatabase(collection, postObject, res, statusCode) {
     try {
       const currentDate=new Date();
@@ -10,12 +11,14 @@ async function postInDatabase(collection, postObject, res, statusCode) {
       if(error.code===11000){
         return res.send({error:'You have already added that'})
       }
-      console.log(error)
+    
       if (error) statusCode = 404;
 
       const errorArray=error.message
-      
-      const propertyArray=['companyName',"range",'tbNumber','orderedDate','productName','orderNumber','location','email','contact']
+      if(errorArray==="Buyer does not belong to the specified company"){
+        return res.status(statusCode).send({ error:errorArray});
+      }
+      const propertyArray=['companyName',"range",'buyer','tbNumber','orderedDate','productName','orderNumber','location','email','contact']
       let errorMessage=[]
       let count=0
       propertyArray.forEach(item=>{

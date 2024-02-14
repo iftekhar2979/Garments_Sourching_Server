@@ -6,8 +6,16 @@ const detailsSizesAndDeliverySizes = require('../function/Reusable_Function/Inpu
 const deliveryDetailModel = require('../Schema_model/deliveredOrderSchema');
 const chalanModel = require('../Schema_model/ChalanSchema');
 const sumObjectsByKey = require('../middleWare/sumObjectByKeys');
+const { getOrders, getFilterOrders, getSingleOrder } = require('../function/getFunctions');
+const { protect } = require('../middleWare/protectMiddleware');
+const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
+const { editOrderDetail, editStatus } = require('../function/patchFunction');
+const { editTotalOrderDetails } = require('../function/PutFunctions');
+const { deleteFromDatabase } = require('../function/Reusable_Function/DeleteFromDatabase');
 const router = new express.Router();
 
+
+router.post('/order/copy/:id',protect,postCopyOrder)
 router.post('/updateOrder/:id', async (req, res) => {
     const requestedId = req.params.id
     const { deliveryDetails, patchedOrderInfo } = req.body
@@ -48,7 +56,38 @@ router.post('/updateOrder/:id', async (req, res) => {
     }
 })
 
-router.patch('/deleteDelivery', async (req, res) => {
+router.get('/orderList',protect,getOrders)
+//GETTING FILTERED DATA
+router.get('/filterOrderList',protect,getFilterOrders)
+//GET SINGLE ORDER LIST 
+router.get('/orderList/:id',protect, getSingleOrder)
+//SINGLE ORDER PUT THE TOTAL SIZE AND REST SIZE
+router.put('/addTotalOrder/:id',protect, editOrderDetail)
+//UPDATING THE COMPLETED DATE
+router.put('/editDate/:id',protect, editOrderDetail)
+//UPDATE THE ORDER
+router.patch('/orderList/:id',protect,async(req,res)=>{
+    const requestedId=req.params.id
+    const obj=req.body.object
+    try{
+        const patchingData=await orderListModel.findByIdAndUpdate(requestedId,obj,{
+            new: true,
+         })
+        return res.status(200).send(patchingData)
+    }catch(error){
+        console.log(error)
+        return res.status(204).send({error:error.message})
+    }   
+ 
+})
+
+//FOR EVERY DELIVERY IT WILL EDIT TARGETED ORDER'S MAIN OBJECT
+router.patch('/addTotalOrder/:id',protect, editTotalOrderDetails)
+//CHANGING THE STATUS OF A SINGLE ORDER
+router.patch('/editStatus/:id', protect,editStatus)
+
+
+router.patch('/deleteDelivery',protect, async (req, res) => {
     const reqId = req.query.id
     const postId = req.query.postId
     const counterId="645dcc1d5a65a1351c90c3bc"
@@ -93,5 +132,8 @@ router.patch('/deleteDelivery', async (req, res) => {
       res.status(500).send({error:error.message,isUpdated:false});
     } 
 
+})
+router.delete('/deleteOrder',protect, async (req, res) => {
+    deleteFromDatabase(orderListModel, res)
 })
 module.exports = router

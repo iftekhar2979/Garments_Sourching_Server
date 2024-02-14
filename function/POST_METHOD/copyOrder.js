@@ -5,15 +5,15 @@ const postCopyOrder=async(req,res)=>{
     try{
         const currentDate=new Date();
         const orderNum=req.params.id
-        console.log(orderNum)
+       
         // console.log()
         const findTheOrder= await orderListModel.findById(orderNum)
         
         // findTheOrder.orderNumber=`${findTheOrder?.orderNumber}-copied`
         // findTheOrder.createdAt=currentDate
         // delete findTheOrder?._id
-const {companyName,shortForm,location,buyerName,productName,orderNumber,quantityOrder,range,sizeSystem,sizeQuantities,targetDate,createdAt,details,grandRestQuantity,grandTotalQuantity,orderedDate,tbNumber}=findTheOrder
-            const order={companyName,shortForm,location,buyerName,productName,orderNumber:`${orderNumber}-copied`,quantityOrder,range,sizeSystem,sizeQuantities,orderedDate,tbNumber,targetDate,createdAt:currentDate,details,grandRestQuantity,grandTotalQuantity}
+const {companyName,shortForm,location,buyerName,productName,orderNumber,quantityOrder,range,sizeSystem,sizeQuantities,targetDate,createdAt,details,grandRestQuantity,grandTotalQuantity,orderedDate,tbNumber,season}=findTheOrder
+            const order={companyName,shortForm,location,buyerName,productName,orderNumber:`${orderNumber}-copied`,quantityOrder,range,sizeSystem,sizeQuantities,orderedDate,tbNumber,targetDate,season,createdAt:currentDate,details,grandRestQuantity,grandTotalQuantity}
         console.log(order)
         
     
