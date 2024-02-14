@@ -17,6 +17,7 @@ const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
 const { piNamePatch } = require('../function/PATCH_METHOD/PiPatch');
 const { deletePi } = require('../function/DELETE_METHOD/DeletePi');
 const { protect } = require('../middleWare/protectMiddleware');
+// const {findingSeasons}=require("../controller/seasonController")
 // const { getUniqueTb }=require("../function/GET_METHOD/tbList")
 const router = new express.Router();
 router.get('/', async (req, res) => {
@@ -126,5 +127,7 @@ router.delete('/deletePi',protect,deletePi)
 //REMOVE DELIVERY DETAIL'S FROM SINGLE ORDER OR TARGATED ORDER
 router.delete('/deleteDeliveryDetail',protect,deleteDeliveryDetailFromDatabase)
 
+
+// router.get('/season/:id',findingSeasons)
 //_________END_____DELETE___________OPERATIONS_____________
 module.exports = router

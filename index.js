@@ -4,8 +4,10 @@ const port = process.env.PORT || 8000
 const router = require("./Router/router")
 const orderRouter=require('./Router/orderRoute')
 const userRoute=require("./Router/userRoutes")
+const seasonRoute=require("./Router/SeasonRoute")
 const cors = require('cors')
 var cookieParser = require('cookie-parser')
+
 require("./Database/connect")
 require('dotenv').config()
 const corsOptions = {
@@ -18,6 +20,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded());
 app.use(router)
+app.use(seasonRoute)
 app.use(orderRouter)
 app.use(userRoute)
 
