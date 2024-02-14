@@ -11,9 +11,8 @@ var cookieParser = require('cookie-parser')
 require("./Database/connect")
 require('dotenv').config()
 const corsOptions = {
-  credentials: true, origin:true
+  credentials: true, origin:process.env.ORIGIN_URL
 };
-
 app.use(cors(corsOptions))
 app.use(express.json())
 // app.options('*', cors()); 
