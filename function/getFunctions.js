@@ -76,7 +76,7 @@ const removeProducts = async (req, res) => {
 const getOrders = async (req, res) => {
   const page = parseFloat(req.query.page)
   try {
-    const findingData = await orderListModel.find({}, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt:-1}).limit(15).skip(15 * page)
+    const findingData = await orderListModel.find({}, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1,season:1 }).sort({ createdAt:-1}).limit(15).skip(15 * page)
     const count = await orderListModel?.estimatedDocumentCount()
     return res.status(200).send({ documentCount: count, findingData });
   } catch (error) {
@@ -194,7 +194,7 @@ const getFilterOrders = async (req, res) => {
   // console.log(findtheQuery)
 
   try {
-    const findingData = await orderListModel.find(findtheQuery, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1 }).sort({ createdAt: -1 }).limit(15).skip(15 * page)
+    const findingData = await orderListModel.find(findtheQuery, { companyName: 1, buyerName: 1,completeDate:1, tbNumber: 1, range: 1, productName: 1, orderNumber: 1, grandTotalQuantity: 1, grandRestQuantity: 1, orderedDate: 1, targetDate: 1, status: 1, completedDate: 1,season:1 }).sort({ createdAt: -1 }).limit(15).skip(15 * page)
     // console.log(findingData)
     const count = await orderListModel.countDocuments(findtheQuery)
     return res.status(200).send({ documentCount: count, findingData });

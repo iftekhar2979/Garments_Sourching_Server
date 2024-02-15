@@ -18,6 +18,7 @@ const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
 const { piNamePatch } = require('../function/PATCH_METHOD/PiPatch');
 const { deletePi } = require('../function/DELETE_METHOD/DeletePi');
 const { protect } = require('../middleWare/protectMiddleware');
+<<<<<<< HEAD
 =======
 
 const { getChalanList } = require('../function/GET_METHOD/chalanList');
@@ -26,6 +27,9 @@ const { getPiStatement, getPiList } = require('../function/GET_METHOD/piStatemen
 const deliveryManModel = require('../Schema_model/DeliveryManSchema');
 const { getUniqueTb } = require('../function/GET_METHOD/tblist');
 >>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
+=======
+// const {findingSeasons}=require("../controller/seasonController")
+>>>>>>> updated-10-18-23
 // const { getUniqueTb }=require("../function/GET_METHOD/tbList")
 const router = new express.Router();
 router.get('/', async (req, res) => {
@@ -173,5 +177,7 @@ router.delete('/deletePi',protect,deletePi)
 //REMOVE DELIVERY DETAIL'S FROM SINGLE ORDER OR TARGATED ORDER
 router.delete('/deleteDeliveryDetail',protect,deleteDeliveryDetailFromDatabase)
 
+
+// router.get('/season/:id',findingSeasons)
 //_________END_____DELETE___________OPERATIONS_____________
 module.exports = router

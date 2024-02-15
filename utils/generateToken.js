@@ -11,7 +11,7 @@ const jwt=require('jsonwebtoken')
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV==="Production",
-      sameSite: "Strict",
+      sameSite: process.env.NODE_ENV==="Production"?"None":"Strict",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
   } catch (error) {
