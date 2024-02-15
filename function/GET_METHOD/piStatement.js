@@ -1,6 +1,9 @@
 const piModel = require("../../Schema_model/PiSchema")
 const getDataByProperty = require("../Reusable_Function/getDataByProperty")
+<<<<<<< HEAD
 const orderListModel=require("../../Schema_model/OrderListSchema")
+=======
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
 const getQueryFromDatabase = require("../Reusable_Function/getQueryFromDatabase")
 
 const getPiStatement = async (req, res) => {
@@ -9,12 +12,17 @@ const getPiStatement = async (req, res) => {
 }
 const getPiList = async (req, res) => {
     try {
+<<<<<<< HEAD
         const findingValue = await piModel.find({}, { companyName:1, piNumber:1, totalQuantity:1, totalAmount:1,_id:1,tbNumbers:1,createdAt:1 }).sort({ createdAt: -1 })
+=======
+        const findingValue = await piModel.find({}, { companyName:1, piNumber:1, totalQuantity:1, totalAmount:1,_id:1,tbNumbers:1,createdAt:1 })
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
         res.send(findingValue)
     } catch (error) {
       res.send(error)
     }
 }
+<<<<<<< HEAD
 const getAllTbLists = async (req, res) => {
     const companyNames = req.query?.companyName
     const tbNumber = req.query?.tbNumber
@@ -232,3 +240,6 @@ const getAllTbLists = async (req, res) => {
     }
   }
 module.exports = { getPiStatement, getPiList ,getAllTbLists}
+=======
+module.exports = { getPiStatement, getPiList }
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48

@@ -80,5 +80,3 @@ const deliveredDetailSchema = new mongoose.Schema({
         type:String
     }
 })
-const deliveryDetailModel = new mongoose.model('deliverDetail', deliveredDetailSchema)
-module.exports = deliveryDetailModel

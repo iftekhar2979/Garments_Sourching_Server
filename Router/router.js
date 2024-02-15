@@ -8,6 +8,7 @@ const orderListModel = require('../Schema_model/OrderListSchema');
 const { editOrderDetail, editStatus, editDeliveryMan, increaseChalan, decreaseChalan, deleteDeliveryDetail } = require('../function/patchFunction');
 const { getProductSummary } = require('../function/summaryDatabase');
 const {getDeliveryStateMent} =require('../function/GET_METHOD/deliveryStatement');
+<<<<<<< HEAD
 // const { getUniqueTb } = require('../function/GET_METHOD/tbList');
 const { getChalanList } = require('../function/GET_METHOD/chalanList');
 const { getPiStatement, getPiList, getUniqueTb, getAllTbLists } = require('../function/GET_METHOD/piStatement');
@@ -17,6 +18,14 @@ const { postCopyOrder } = require('../function/POST_METHOD/copyOrder');
 const { piNamePatch } = require('../function/PATCH_METHOD/PiPatch');
 const { deletePi } = require('../function/DELETE_METHOD/DeletePi');
 const { protect } = require('../middleWare/protectMiddleware');
+=======
+
+const { getChalanList } = require('../function/GET_METHOD/chalanList');
+const { getPiStatement, getPiList } = require('../function/GET_METHOD/piStatement');
+// const deliveryMan = require('../Schema_model/DeliveryManSchema');
+const deliveryManModel = require('../Schema_model/DeliveryManSchema');
+const { getUniqueTb } = require('../function/GET_METHOD/tblist');
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
 // const { getUniqueTb }=require("../function/GET_METHOD/tbList")
 const router = new express.Router();
 router.get('/', async (req, res) => {
@@ -39,6 +48,7 @@ router.get('/singleDeliveryDetail/:id',protect, getSingleDeliverDetail)
 
 
 //GETTING PI DATA
+<<<<<<< HEAD
 router.post('/pi',protect,getPiByRange)
 router.get('/buyers',protect,getBuyers)
 router.get('/search',protect,getSearchedOrder)
@@ -49,17 +59,36 @@ router.get('/chalanLists',protect,getChalanList)
 router.get('/piStatement/:id',protect,getPiStatement)
 router.get('/piList',protect,getPiList)
 
+=======
+router.post('/pi',getPiByRange)
+router.get('/buyers',getBuyers)
+router.get('/search',getSearchedOrder)
+// router.get('/tbList',getUniqueTb)
+router.post('/deliveryStatement',getDeliveryStateMent)
+router.get('/productSummary',getProductSummary)
+router.get('/chalanLists',getChalanList)
+router.get('/piStatement/:id',getPiStatement)
+router.get('/piList',getPiList)
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
 router.get('/deliveryMan/:id',async(req,res)=>{
     try {
         const requestedId = req.params.id
         // console.log(requestedId)
         const findingData = await deliveryManModel.findById(requestedId)
+<<<<<<< HEAD
+=======
+      
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
         return res.send(findingData)
       } catch (error) {
         return res.send({ error: error.message })
       }
 })
+<<<<<<< HEAD
 //____________END_____GET_____________________
+=======
+//____________END_____GET_______________
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
 
 
 //____________POST____OPERATIONS______________
@@ -97,7 +126,24 @@ router.patch('/deliveryMan/:id',async(req,res)=>{
         return res.send({ error: error.message })
      }
 })
+<<<<<<< HEAD
 router.patch('/piName/:id',protect,piNamePatch)
+=======
+router.patch('/deliveryMan/:id',async(req,res)=>{
+    try {
+        const requestedId = req.params.id
+      
+        const puttingData = await deliveryManModel.findByIdAndUpdate(requestedId, { $push: { deliveryMan: { $each: req.body } } }, {
+           new: true,
+           upsert: true,
+        })
+  
+        return res.send({ updated: true, puttingData })
+     } catch (error) {
+        return res.send({ error: error.message })
+     }
+})
+>>>>>>> 0acc11ed79fd36ea0184aaf26d17717b86606a48
 
 //______END_____PUT_____OPERATIONS___________
 
