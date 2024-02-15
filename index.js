@@ -10,9 +10,17 @@ var cookieParser = require('cookie-parser')
 
 require("./Database/connect")
 require('dotenv').config()
-const corsOptions = {
-  credentials: true, origin:process.env.ORIGIN_URL
-};
+let corsOptions ;
+if(process.env.NODE_ENV==="Production"){
+  corsOptions = {
+    credentials: true, origin:process.env.ORIGIN_URL
+  };
+}else{
+  corsOptions = {
+    credentials: true, origin:true
+  };
+}
+
 app.use(cors(corsOptions))
 app.use(express.json())
 // app.options('*', cors()); 
