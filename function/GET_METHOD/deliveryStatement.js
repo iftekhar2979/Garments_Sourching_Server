@@ -43,6 +43,7 @@ const getDeliveryStateMent = async (req, res) => {
           deliveryCount: { $sum: '$deliveryCount' }
         }
       },
+      
       {
         $project: {
           _id: 0,
@@ -54,6 +55,10 @@ const getDeliveryStateMent = async (req, res) => {
       }, 
     ],
       { maxTimeMS: 60000, allowDiskUse: true })
+findingValue.forEach(item=>{
+  item.chalanInfo.sort((a,b)=>a.chalanNumber-b.chalanNumber)
+})
+
 
     res.status(200).send(findingValue)
   } catch (error) {

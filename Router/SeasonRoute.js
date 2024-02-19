@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post('/season/:id',async(req,res)=>{
     const expectedSeason=req.params.id
+    const {query}=req.query
+  
     try{
         const aggregationPipeLine=[
             {
@@ -14,7 +16,7 @@ router.post('/season/:id',async(req,res)=>{
                  * query: The query in MQL.
                  */
                 {
-                  season: expectedSeason,
+                 [ query]: expectedSeason,
                 },
             },
             {
