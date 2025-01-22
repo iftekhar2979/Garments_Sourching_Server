@@ -4,8 +4,11 @@ const port = process.env.PORT || 8000
 const router = require("./Router/router")
 const orderRouter=require('./Router/orderRoute')
 const userRoute=require("./Router/userRoutes")
+const billOfExchangeRoute=require("./Router/billOfExchangeRoute")
+const bankRoute=require("./Router/bankRoute")
 const cors = require('cors')
 var cookieParser = require('cookie-parser')
+const billOfExchangeModel = require('./Schema_model/billOfExchangeSchema')
 require("./Database/connect")
 require('dotenv').config()
 const corsOptions = {
@@ -20,7 +23,8 @@ app.use(express.urlencoded());
 app.use(router)
 app.use(orderRouter)
 app.use(userRoute)
-
+app.use(billOfExchangeRoute)
+app.use(bankRoute)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
